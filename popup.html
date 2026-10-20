@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Product Image Downloader</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Product Image Downloader</h1>
+      <span id="siteBadge" class="badge">…</span>
+    </header>
+
+    <p id="status" class="status">Scanning page…</p>
+
+    <section id="actions" class="actions" hidden>
+      <button id="btnSelect" class="btn secondary">Select Images</button>
+      <button id="btnAll" class="btn primary">Download All</button>
+    </section>
+
+    <section id="selector" hidden>
+      <div class="toolbar">
+        <button id="selAll" class="link">Select all</button>
+        <button id="selNone" class="link">Select none</button>
+        <span id="selCount" class="count"></span>
+      </div>
+      <div id="grid" class="grid"></div>
+      <button id="btnSelected" class="btn primary wide" disabled>Download selected</button>
+    </section>
+
+    <section class="options">
+      <label>Size handling
+        <select id="mode">
+          <option value="fit">Fit (white padding, no cropping)</option>
+          <option value="fill">Fill (crop to square)</option>
+        </select>
+      </label>
+      <label>Format
+        <select id="format">
+          <option value="jpg">JPG</option>
+          <option value="png">PNG</option>
+        </select>
+      </label>
+    </section>
+
+    <div id="progress" class="progress" hidden>
+      <div class="bar"><div id="barFill"></div></div>
+      <span id="progressText"></span>
+    </div>
+
+    <p class="hint">All images are exported at 1080 × 1080 px inside a ZIP file.</p>
+    <script src="popup.js"></script>
+  </body>
+</html>
