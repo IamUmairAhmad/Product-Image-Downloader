@@ -281,8 +281,10 @@
         } catch (e) {}
       }
       if (!items.length) {
+        // Fallback only. Keep selectors tight: plain [class*="slider"] also matches
+        // the "recommended items" carousels further down the page.
         eachImg(
-          '[class*="slider"] img, [class*="magnifier"] img, [class*="image-view"] img, [class*="images-view"] img, [class*="gallery"] img',
+          '[class*="slider--"] img, [class*="magnifier--"] img, [class*="image-view-v2"] img, [class*="images-view-item"] img',
           (img, c) => {
             const good = c.filter((u) => /alicdn\.com|aliexpress-media/.test(u));
             if (good[0]) add(stripAliSuffix(good[0]), ...good);
