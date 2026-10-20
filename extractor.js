@@ -261,14 +261,17 @@
       }
     } else if (site === 'Etsy') {
       const up = (u) => u.replace(/il_[0-9a-z]+x[0-9a-zN]+/i, 'il_fullxfull');
+      // Only real listing photos (".../il/.../il_<size>...."). Broader carousel
+      // selectors also match review photos (iap_), avatars (iusa_), and video posters.
+      const isListingPhoto = (u) => /etsystatic\.com\/.*\/il\/.*il_/.test(u);
       eachImg(
-        '.listing-page-image-carousel-component img, [data-carousel-pane] img, ul.carousel-pane-list img, [data-appears-component-name="listing_page_image_carousel"] img, [data-component="listing-page-image-carousel"] img',
+        '.listing-page-image-carousel-component img, [data-appears-component-name="listing_page_image_carousel"] img, [data-component="listing-page-image-carousel"] img',
         (img, c) => {
-          const good = c.filter((u) => /etsystatic\.com/.test(u));
+          const good = c.filter(isListingPhoto);
           if (good[0]) add(up(good[0]), ...good);
         }
       );
-      if (!items.length) ldImages().forEach((u) => add(up(u), u));
+      if (!items.length) ldImages().filter(isListingPhoto).forEach((u) => add(up(u), u));
     } else if (site === 'AliExpress') {
       const html = document.documentElement.innerHTML;
       const m = html.match(/"imagePathList"\s*:\s*(\[[^\]]*\])/);
