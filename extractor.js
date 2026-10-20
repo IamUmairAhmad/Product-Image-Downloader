@@ -295,6 +295,9 @@
       eachImg(
         '.id-list img, [class*="image-list"] img, [class*="main-image"] img, [class*="gallery"] img, [data-testid="media-image"], [class*="thumb"] img',
         (img, c) => {
+          // Skip the small widget icons that sit inside the same gallery container.
+          const cls = typeof img.className === 'string' ? img.className : '';
+          if (/icon|logo|badge/i.test(cls) || (img.naturalWidth && img.naturalWidth < 200)) return;
           const good = c.filter((u) => /alicdn\.com|alibaba/.test(u));
           if (good[0]) add(stripAliSuffix(good[0]), ...good);
         }
