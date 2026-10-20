@@ -180,11 +180,13 @@
       if (idx2 >= 0) {
         const initIdx = html.indexOf('initial', idx2);
         const arrStart = initIdx >= 0 ? html.indexOf('[', initIdx) : -1;
-        if (arrStart >= 0 && arrStart - initIdx < 20) {
+        // The array may be wrapped, e.g. 'initial': A.$.parseJSON('[{...}]')
+        if (arrStart >= 0 && arrStart - initIdx < 80) {
           const raw = extractBalanced(html, arrStart);
           if (raw) {
             try {
-              JSON.parse(raw).forEach((it) => {
+              const fullRes = (u) => u.replace(/\._[^/]*_\.(jpe?g|png|webp)(\?.*)?$/i, '.$1');
+              JSON.parse(raw.replace(/\\'/g, "'")).forEach((it) => {
                 let u = it.hiRes || it.large;
                 if (!u && it.main) {
                   let bestA = 0;
@@ -196,7 +198,8 @@
                     }
                   });
                 }
-                if (u) add(u, it.large, it.thumb);
+                // Try the original full-resolution file first, then hiRes/large.
+                if (u) add(fullRes(u), u, it.large, it.thumb);
               });
             } catch (e) {}
           }
